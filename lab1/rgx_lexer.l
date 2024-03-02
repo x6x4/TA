@@ -10,13 +10,9 @@ oper_sgn [&, |, ^]
 regex_str ^{spaces}{var_name}({spaces}{oper_sgn}{spaces}{var_name}{spaces})*$
 
 %%      
-{regex_str} { std::cout << "ok" << std::endl;}
+{regex_str} { std::cout << 1 << ' ';}
 \n 
-.     { std::cout << "err" << std::endl; return 0; }
+.     { std::cout << 0 << ' '; return 0; }
 %%
 
-int main() {
-    FlexLexer* lexer = new yyFlexLexer;
-    while(lexer->yylex() != 0);
-    delete lexer;
-}
+

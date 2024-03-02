@@ -2,3 +2,7 @@
 *.out
 *.o
 *.cc
+*build
+*.cache
+*CMakeFiles
+*.data
