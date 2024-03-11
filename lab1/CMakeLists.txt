@@ -7,7 +7,7 @@ project(TA_lab1)
 set (CMAKE_CXX_STANDARD 20)
 set (AUX_FLAGS "-O0 -coverage ")
 
-set (CMAKE_CXX_FLAGS "-ggdb -std=c++20 -Wall -Wextra -Wpedantic")
+set (CMAKE_CXX_FLAGS "-std=c++20 -Wall -Wextra -Wpedantic")
 
 #  flex
 

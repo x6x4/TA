@@ -1,0 +1,14 @@
+
+(INT) T = 1
+(INT) F = 0
+
+(BOOL) 0 = F
+(BOOL) 6 = T
+
+CELL = {EMPTY, WALL, BOX, EXIT, UNDEF};
+     = { T, F, F, T, U}
+     = (0, INF, (WEIGHT), -INF, NAN)
+
+
+STRONG (EXPLICIT) TYPE SYSTEM 
+
