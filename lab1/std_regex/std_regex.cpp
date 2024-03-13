@@ -1,7 +1,6 @@
-#pragma once
- 
 #include <regex>
 #include <string>
+
 
 inline std::regex rgx_ctor () {
 
@@ -14,4 +13,9 @@ inline std::regex rgx_ctor () {
     std::string rgx_str = "^" + spaces + var_name + 
         "(" + spaces + oper_sgn + spaces + var_name + spaces + ")*" + "$";
     return std::regex(rgx_str);
+}
+
+bool check_string(const std::string& str) {
+    std::regex re = rgx_ctor();
+    return std::regex_match(str, re);
 }

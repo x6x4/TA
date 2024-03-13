@@ -2,7 +2,6 @@
 #include <cstddef>
 #include <iostream>
 
-#include "regex_constructor/regex_constructor.h"
 #include "regex_gen/regex_gen.h"
 
 //  statement := variable_name ([operation_sign] [statement])*
