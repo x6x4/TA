@@ -6,41 +6,55 @@
 
 %map Map1
 %%
-// State		Transition		End State		Action(s)
+// State		Transition		      End State		 Action(s)
 Start
 {
-				Zero			Zeros			{}
-				One				Ones			{}
-				Unknown			Error			{}
-				EOS				OK				{Acceptable();}
+				to_expr_start         expr_start     {}
+				to_var_prefix         nil     		 {}
+				to_var_name 		  nil			 {}
+				within_var_name	      nil			 {}
+				to_sign               nil            {}
+				EOS				      nil		     {}
 }
-
-Zeros
+expr_start
 {
-				Zero			Zeros			{}
-				One				Ones			{}
-				Unknown			Error			{}
-				EOS				OK				{Acceptable();}
+				to_expr_start         nil            {}
+				to_var_prefix         var_prefix     {}
+				to_var_name 		  nil			 {}
+				within_var_name	      nil			 {}
+				to_sign               nil            {}
+				EOS				      nil		     {}
 }
-
-Ones
+var_prefix
 {
-				Zero			Error			{}
-				One				Ones			{}
-				Unknown			Error			{}
-				EOS				OK				{Acceptable();}
+				to_expr_start         nil            {}
+				to_var_prefix         nil			 {}
+				to_var_name           var_name       {}
+				within_var_name	      nil			 {}
+				to_sign               nil            {}
+				EOS				      OK			 {Acceptable();}
+}
+var_name
+{
+				to_expr_start         nil            {}
+				to_var_prefix         nil			 {}
+				to_var_name           nil            {}
+				within_var_name	      var_name		 {}
+				to_sign               sign           {}
+				EOS				      OK			 {Acceptable();}
+}
+sign
+{
+				to_expr_start         expr_start     {}
+				to_var_prefix         nil			 {}
+				to_var_name           nil            {}
+				within_var_name	      nil            {}
+				to_sign               nil            {}
+				EOS				      nil			 {Unacceptable();}
 }
 
 OK
 {}
-
-Error
-{
-				Zero			nil				{}
-				One				nil				{}
-				Unknown			nil				{}
-				EOS				nil				{Unacceptable();}
-}
 
 %%
 
