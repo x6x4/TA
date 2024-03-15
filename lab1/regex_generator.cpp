@@ -12,4 +12,5 @@
 int main (int argc, char **argv) {
     std::srand(time(NULL));
     make_regex_data(std::atoi(argv[1]));
+    make_shit_data(std::atoi(argv[1]));
 }

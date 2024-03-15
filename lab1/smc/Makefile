@@ -37,7 +37,7 @@ SMC=            java -jar ${SMC_DIR}/bin/Smc.jar
 SMC_FLAGS=      -c++ $(TRACE) $(NO_CATCH) $(NO_EXCEPT) $(CRTP)
 
 CXX=            c++
-CPPFLAGS=       -g -Wall -Wextra -I${SMC_DIR}/lib/C++ $(FSM_DEBUG) $(CRTP_FLAG)
+CPPFLAGS=       -DSMC -Wall -Wextra -I${SMC_DIR}/lib/C++ $(FSM_DEBUG) $(CRTP_FLAG)
 
 RM_F=           rm -f
 

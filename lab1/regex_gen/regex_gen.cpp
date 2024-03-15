@@ -1,5 +1,6 @@
 
 #include <algorithm>
+#include <cctype>
 #include <cstddef>
 #include <ctime>
 #include <iostream>
@@ -77,13 +78,43 @@ std::string regex_gen () {
     return total_rgx;    
 }
 
+#include "../check_string.h"
+
+std::size_t _length = 30;
+
+std::string shit_gen () {
+
+    std::string str(_length,0);
+    std::size_t print_ch_start = 32;
+    std::size_t print_char_end = 126;
+
+    do {
+        for (size_t i = 0; i < _length; i++) {
+            str[i] = rand() % (print_char_end-print_ch_start+1) 
+            + print_ch_start;
+        }
+    } while (check_string(str));
+
+    return str;
+}
+
 void make_regex_data (size_t cnt) {
-    std::ofstream file("matching_strings.data", 
+    std::ofstream file("./data/matching.data", 
                         std::ios::out | std::ios::trunc);
     if (file.is_open()) {
         for (size_t i = 0; i < cnt; i++) {
-            //file << "regex #" << i << ":";
             file << regex_gen() << std::endl;
+        }
+        file.close();
+    } else std::cerr << "File error." << std::endl;
+}
+
+void make_shit_data (size_t cnt) {
+    std::ofstream file("./data/unmatching.data", 
+                        std::ios::out | std::ios::trunc);
+    if (file.is_open()) {
+        for (size_t i = 0; i < cnt; i++) {
+            file << shit_gen() << std::endl;
         }
         file.close();
     } else std::cerr << "File error." << std::endl;

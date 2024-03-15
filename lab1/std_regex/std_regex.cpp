@@ -2,6 +2,7 @@
 #include <string>
 
 
+//  regex itself
 inline std::regex rgx_ctor () {
 
     std::string var_name_first_ch("(!|[[:alpha:]])");
@@ -12,7 +13,7 @@ inline std::regex rgx_ctor () {
     std::string oper_sgn("[&, |, ^]");
     std::string rgx_str = "^" + spaces + var_name + 
         "(" + spaces + oper_sgn + spaces + var_name + spaces + ")*" + "$";
-    return std::regex(rgx_str);
+    return std::regex(rgx_str, std::regex_constants::optimize);
 }
 
 bool check_string(const std::string& str) {
