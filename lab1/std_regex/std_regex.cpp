@@ -1,9 +1,8 @@
 #include <regex>
 #include <string>
 
-
 //  regex itself
-inline std::regex rgx_ctor () {
+std::regex rgx_ctor () {
 
     std::string var_name_first_ch("(!|[[:alpha:]])");
     std::string var_name_rest("[[:alnum:]]{0,15}");
@@ -16,7 +15,9 @@ inline std::regex rgx_ctor () {
     return std::regex(rgx_str, std::regex_constants::optimize);
 }
 
+std::regex rgx = rgx_ctor();
+
 bool check_string(const std::string& str) {
-    std::regex re = rgx_ctor();
+    std::regex re = rgx;
     return std::regex_match(str, re);
 }

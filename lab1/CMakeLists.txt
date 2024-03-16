@@ -6,16 +6,14 @@ project(TA_lab1)
 
 set (CMAKE_CXX_STANDARD 20)
 set (AUX_FLAGS "-O0 -coverage ")
-set (CMAKE_MESSAGE_LOG_LEVEL "DEBUG")
 
 
-set (FLAG "SMC")
-set (CMAKE_CXX_FLAGS "-std=c++20 -Wall -Wextra -Wpedantic -D${FLAG}")
+set (FLAG "STD_REGEX")
+set (CMAKE_CXX_FLAGS "-O2 -std=c++20 -Wall -Wextra -Wpedantic -D${FLAG}")
 
 add_subdirectory(flex)
 
 if (FLAG STREQUAL "STD_REGEX")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --optimize")
     add_subdirectory(std_regex)
     add_executable(my_regex.out main.cpp)
     target_link_libraries(my_regex.out std_regex)

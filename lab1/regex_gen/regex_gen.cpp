@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cctype>
 #include <cstddef>
+#include <cstdlib>
 #include <ctime>
 #include <iostream>
 #include <fstream>
@@ -9,7 +10,7 @@
 
 
 size_t spaces_limit = 2;
-size_t rest_repeat_limit = 8;
+size_t cnt = 10;
 
 
 const std::string alnum_charset =
@@ -65,24 +66,23 @@ std::string gen_regex_rest () {
     return rgx_rest;
 }
 
-std::string regex_gen () {
+std::string regex_gen (std::size_t _length) {
     std::string total_rgx;
     
     total_rgx = random_string(rand()%spaces_limit, spaces_charset) + 
     gen_var_name();
 
-    bool rest_number = rand() % rest_repeat_limit;
-    for (size_t i = 0; i < rest_number; i++)
+    while (total_rgx.length() < _length)
         total_rgx = total_rgx + gen_regex_rest();
+
+    total_rgx.resize(_length);
 
     return total_rgx;    
 }
 
 #include "../check_string.h"
 
-std::size_t _length = 30;
-
-std::string shit_gen () {
+std::string shit_gen (std::size_t _length) {
 
     std::string str(_length,0);
     std::size_t print_ch_start = 32;
@@ -98,23 +98,25 @@ std::string shit_gen () {
     return str;
 }
 
-void make_regex_data (size_t cnt) {
-    std::ofstream file("./data/matching.data", 
+void make_regex_data (std::size_t _length) {
+    std::string filename = "./data/match" + std::to_string(_length) + ".data";
+    std::ofstream file(filename, 
                         std::ios::out | std::ios::trunc);
     if (file.is_open()) {
         for (size_t i = 0; i < cnt; i++) {
-            file << regex_gen() << std::endl;
+            file << regex_gen(_length) << std::endl;
         }
         file.close();
     } else std::cerr << "File error." << std::endl;
 }
 
-void make_shit_data (size_t cnt) {
-    std::ofstream file("./data/unmatching.data", 
+void make_shit_data (std::size_t _length) {
+    std::string filename = "./data/unmatch" + std::to_string(_length) + ".data";
+    std::ofstream file(filename, 
                         std::ios::out | std::ios::trunc);
     if (file.is_open()) {
         for (size_t i = 0; i < cnt; i++) {
-            file << shit_gen() << std::endl;
+            file << shit_gen(_length) << std::endl;
         }
         file.close();
     } else std::cerr << "File error." << std::endl;
