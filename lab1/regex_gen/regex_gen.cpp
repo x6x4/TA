@@ -104,7 +104,7 @@ void make_regex_data (std::size_t _length) {
                         std::ios::out | std::ios::trunc);
     if (file.is_open()) {
         for (size_t i = 0; i < cnt; i++) {
-            file << regex_gen(_length) << std::endl;
+            file << regex_gen(_length) << '\n';
         }
         file.close();
     } else std::cerr << "File error." << std::endl;
@@ -116,7 +116,7 @@ void make_shit_data (std::size_t _length) {
                         std::ios::out | std::ios::trunc);
     if (file.is_open()) {
         for (size_t i = 0; i < cnt; i++) {
-            file << shit_gen(_length) << std::endl;
+            file << shit_gen(_length) << '\n';
         }
         file.close();
     } else std::cerr << "File error." << std::endl;

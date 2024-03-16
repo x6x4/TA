@@ -6,3 +6,4 @@
 *.cache
 *CMakeFiles
 *.data
+*log
