@@ -5,7 +5,7 @@
 
 int main() {
 
-    /*std::cout << "In use: ";
+    std::cout << "In use: ";
 
     #ifdef STD_REGEX
     std::cout << "std::regex";
@@ -14,16 +14,16 @@ int main() {
     #elif defined SMC 
     std::cout << "smc";
     #endif
-    std::cout << std::endl;*/
+    std::cout << std::endl;
 
     std::string line;
 
     while (!std::getline(std::cin, line).eof()) {
-        //bool result = check_string(line);
-        //std::cout << result << ' ';
-        check_string(line);
+        bool result = check_string(line);
+        std::cout << result << ' ';
+        //check_string(line);
     } 
-    //std::cout << std::endl;
+    std::cout << std::endl;
 
     return 0;
 }

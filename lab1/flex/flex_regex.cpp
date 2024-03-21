@@ -4,6 +4,8 @@
 #include <string>
 #include <FlexLexer.h>
 
+//  lexer не создавать каждый раз
+//  lexer as a class field
 
 bool check_string(const std::string& str) {
     
@@ -18,3 +20,5 @@ bool check_string(const std::string& str) {
 
     return result;
 }
+
+//  target include directories

@@ -62,8 +62,10 @@ bool AppClass::CheckString(const std::string &theString)
     return isAcceptable;
 }
 
+//  string_view - const char * & string   by value
+
 bool check_string(const std::string& str) {
-    AppClass thisContext;
+    AppClass thisContext;  //  field
     return thisContext.CheckString(str);
 }
 

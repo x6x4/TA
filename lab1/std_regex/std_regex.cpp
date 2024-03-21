@@ -21,3 +21,6 @@ bool check_string(const std::string& str) {
     std::regex re = rgx;
     return std::regex_match(str, re);
 }
+
+
+//  make class without global state

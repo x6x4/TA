@@ -75,12 +75,12 @@ std::string regex_gen (std::size_t _length) {
     while (total_rgx.length() < _length)
         total_rgx = total_rgx + gen_regex_rest();
 
-    total_rgx.resize(_length);
+    total_rgx.resize(_length);  //  ??????????????
 
     return total_rgx;    
 }
 
-#include "../check_string.h"
+#include "../check_string.h"  //  target include dirs
 
 std::string shit_gen (std::size_t _length) {
 
@@ -111,6 +111,7 @@ void make_regex_data (std::size_t _length) {
 }
 
 void make_shit_data (std::size_t _length) {
+    //  std::filesystem
     std::string filename = "./data/unmatch" + std::to_string(_length) + ".data";
     std::ofstream file(filename, 
                         std::ios::out | std::ios::trunc);
