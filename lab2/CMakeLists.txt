@@ -10,8 +10,8 @@ set (AUX_FLAGS "-O0 -coverage ")
 
 set (CMAKE_CXX_FLAGS "-g -std=c++20 -Wall -Wextra -Wpedantic")
 
-#  random strings generator
+find_package(fmt REQUIRED)
 
 #add_subdirectory(regex_gen)
 add_executable(huinya.out main.cpp)
-#target_link_libraries(std_regex_gen.out regex_gen)
+target_link_libraries(huinya.out fmt::fmt)

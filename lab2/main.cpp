@@ -10,7 +10,9 @@ int main () {
     std::getline(std::cin, buf_str);
     
     my_parser.compile(buf_str);
-    std::cout << my_parser;
+    //std::cout << my_parser;
+
+    my_parser.make_graph();
 
     /*
     0 a 1

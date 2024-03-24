@@ -1,12 +1,19 @@
 #include <algorithm>
 #include <cstddef>
+#include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <list>
 #include <map>
-#include <ostream>
+#include <fstream>
 #include <stdexcept>
 #include <string>
+#include <string_view>
+#include <unordered_map>
+#include <utility>
 #include <vector>
+#include <cstdlib>
+#include <fmt/format.h>
 
 /*
 01001
@@ -36,21 +43,45 @@ struct Token {
 };
 
 struct Transition {
-    char hui;
+    char label;
     State next; 
 
     friend std::ostream &operator<< (std::ostream &os, const Transition &kyk) {
-        return os << '{' << kyk.hui << ' ' << kyk.next << '}';
+        return os << kyk.label << ' ' << kyk.next << ' ';
     }
 };
 
-void make_new_states (std::size_t child_num, State par); 
 
 struct KYK_PARSER {
 
     std::multimap<State, Transition> state_table;
     State last_state = 0;
+    
     std::string delims = "|*+";
+    bool not_delim(char ch) { return delims.find(ch) == std::string::npos; }
+
+
+    void make_graph () {
+        std::ofstream outfile("graph.dot");
+        if (!outfile.is_open()) {
+            throw std::runtime_error("Error: Unable to create file.");
+        }
+
+        outfile << "digraph G {\n";  
+        outfile << "\trankdir=LR;\n"; 
+        outfile << "0 [fillcolor=\"green\", style=\"filled\"];";
+    
+        std::string str;
+        for (const auto &entry : state_table) {
+            outfile << fmt::format("\t{} -> {} [label=\"{}\"];\n", 
+            entry.first, entry.second.next, entry.second.label);
+        }
+
+        outfile << "}\n";
+        outfile.close();
+
+        system("dot -Tpng graph.dot -o graph.png");
+    }
 
     friend std::ostream &operator<< (std::ostream &os, const KYK_PARSER &kyk) {
         for (const auto &entry : kyk.state_table) {
@@ -59,74 +90,89 @@ struct KYK_PARSER {
         return os;
     }
 
-    size_t concat (const std::string &tok_str, size_t first, size_t entrypoint) {
 
-        size_t cur_state = entrypoint;
-        size_t next_state = last_state + 1;
-        size_t buf_first = first;
+    //  returns end state of the chain
+    void concat_chain (char* &ptr, State &cur_state, State entrypoint) {
 
-        for (char cur_char = 0; 
-            delims.find((cur_char = tok_str[first])) == std::string::npos 
-            && first < tok_str.size(); first++) {
-            
-            state_table.insert({cur_state, {cur_char, next_state}});
-            cur_state = next_state++;
+        bool first_it = 1;
+
+        for (char cur_char = 0; *ptr && not_delim(cur_char = *ptr);
+            ptr++, cur_state++) {
+
+            if (first_it) {
+                state_table.insert({entrypoint, {cur_char, cur_state+1}});
+                first_it = 0;
+            }
+            else state_table.insert({cur_state, {cur_char, cur_state + 1}});
         }
-        last_state = cur_state;
-        return first - buf_first;
+    }
+
+    /*
+            abc|de|fg
+            012345678
+    */
+
+    bool make_chain (char* &ptr, State &entrypoint, State &endpoint) {
+
+        static bool closure = 0;
+        static bool binary_expr_end = 0;
+
+        if (closure) {
+            state_table.find(--last_state)->second.next = entrypoint;
+            closure = 0;
+        }
+
+        State start_state = last_state;
+        concat_chain(ptr, last_state, entrypoint);
+        std::cout << endpoint << std::endl;
+        std::cout << last_state << std::endl;
+        char oper_sign = *ptr;
+
+        if (binary_expr_end) {
+            state_table.find(--last_state)->second.next = endpoint;
+            binary_expr_end = 0;
+        }
+
+        switch (oper_sign) {
+
+            case '\0':
+                return 0;
+
+            case '|':
+
+                //  remember first endpoint
+                if (!endpoint) {
+                    entrypoint = start_state; 
+                    endpoint = last_state;
+                }
+                binary_expr_end = 1;
+            break;
+
+            case '*':
+                if (!endpoint) { 
+                    endpoint = start_state;
+                }
+                closure = 1;
+
+            break;
+
+            default:
+                throw std::runtime_error ("huinya kakaya-to");
+        }
+        
+        return 1;
     }
         
-    int compile(const std::string &tok_str) {
+    int compile(std::string_view tok_str) {
 
-        size_t entrypoint = 0;
+        State entrypoint = 0;
+        State endpoint = 0;
+        char *str_ptr = const_cast<char*>(tok_str.data());
         
-        for (size_t cur_pos = 0; cur_pos < tok_str.size(); ) {
-            
-            cur_pos += concat(tok_str, cur_pos, entrypoint);
-
-            char oper_sign = tok_str[cur_pos++];
-            std::cout << oper_sign << '\n';
-            if (oper_sign == '|') { cur_pos += concat(tok_str, cur_pos++, entrypoint); }
-            //else if (oper_sign == '*')  {}
-            //else if (oper_sign)
-            //    throw std::runtime_error ("huinya kakaya-to");
-        }
+        while (make_chain(str_ptr, entrypoint, endpoint)) {str_ptr++;}
         
         return 1;
     }
 };
 
-struct KYK_DFA {
-
-//  свертка в номер конечного состояния 
-
-    void alternate (std::vector<Token> branching_tokens) {
-
-        //  (x)|(y)|(z)
-
-        /*
-        n ((x)) n+1
-        n ((y)) n+1
-
-        <n, a>
-        */
-        
-        //make_new_states(branching_tokens.size(), last_state);
-        for (auto t : branching_tokens)
-            t.unfold();
-    }   
-
-    void repeat (Token t) {
-
-        //start (t_part1) middle_state 
-        //middle_state (t_part2) start 
-        /*
-        0 (a) 1 (b) *2 (a) 1 
-
-        0 (a) 1
-        1 (b) 2
-        2 (a) 1
-        */
-    }
-};
 
