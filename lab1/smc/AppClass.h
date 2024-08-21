@@ -5,7 +5,7 @@
 #include <string>
 #include "../check_string.h"
 
-
+class SmcCheckString;
 
 #ifdef CRTP
 class AppClass : public AppClassContext<AppClass>
@@ -29,7 +29,8 @@ public:
     ~AppClass() {};
         // Destructor.
 
-    inline bool is_Acceptable() const { return isAcceptable; }
+    bool CheckString(const std::string &str, SmcCheckString &smc);
+        // Checks if the string is acceptable.
 
     inline void Acceptable()
     { isAcceptable = true; };
@@ -46,5 +47,8 @@ class SmcCheckString : public CheckString {
 AppClass _fsm; 
 
 public:
-    bool operator() (const std::string& str) override;
+    bool operator() (const std::string& str) override {
+        AppClass thisContext;  //  field
+        return thisContext.CheckString(str, *this);
+    }
 };

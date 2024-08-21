@@ -7,6 +7,7 @@
 #elif defined FLEX 
 
 #elif defined SMC 
+#include "smc/AppClass.h"
 
 #endif
 

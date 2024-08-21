@@ -33,7 +33,7 @@ std::string random_string( size_t length, const std::string &charset ) {
 
     auto randchar = [ &charset ]() -> char
     {
-        const size_t max_index = (charset.size() - 1);
+        const size_t max_index = (charset.size());
         return charset[ rand() % max_index ];
     };
     std::string str(length,0);

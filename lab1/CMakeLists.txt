@@ -8,7 +8,7 @@ set (CMAKE_CXX_STANDARD 20)
 set (AUX_FLAGS "-O0 -coverage ")
 
 
-set (FLAG "STD_REGEX")
+set (FLAG "SMC")
 set (CMAKE_CXX_FLAGS "-O2 -std=c++20 -Wall -Wextra -Wpedantic -D${FLAG}")
 
 add_subdirectory(flex)
@@ -31,5 +31,6 @@ endif()
 #  random strings generator
 
 add_subdirectory(regex_gen)
+add_subdirectory(std_regex)
 add_executable(std_regex_gen.out regex_generator.cpp)
-target_link_libraries(std_regex_gen.out regex_gen)
+target_link_libraries(std_regex_gen.out regex_gen std_regex)
