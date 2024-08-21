@@ -16,7 +16,7 @@ AppClass::AppClass()
 #endif
 }
 
-bool AppClass::CheckString(const std::string &theString)
+bool SmcCheckString::operator()(const std::string &theString)
 {
     if (theString.empty()) return false;
 
@@ -24,6 +24,7 @@ bool AppClass::CheckString(const std::string &theString)
     _fsm.to_expr_start();
     size_t char_num = 0;
     std::string spaces = " \t\f\v";
+    std::string name;
 
     for (; theString[char_num] != '\0'; _fsm.to_expr_start()) {
 
@@ -39,11 +40,14 @@ bool AppClass::CheckString(const std::string &theString)
         size_t lim_char_num = 15;
         size_t char_in_name = 1;
         _fsm.to_var_name();
+        int char_num_prev = char_num;
 
         for (; isalnum(theString[char_num]) && char_in_name < lim_char_num + 1; char_in_name++) {        
             _fsm.within_var_name();
             char_num++;
         }
+
+        name = theString.substr(char_num_prev, char_num - char_num_prev);
         
         while (spaces.find(theString[char_num]) != std::string::npos) char_num++;
 
@@ -59,13 +63,11 @@ bool AppClass::CheckString(const std::string &theString)
     // end of string has been reached - send the EOS transition.
     _fsm.EOS();
 
-    return isAcceptable;
+    if (_fsm.is_Acceptable) addVar(name);
+
+    return _fsm.is_Acceptable();
 }
 
 //  string_view - const char * & string   by value
 
-bool check_string(const std::string& str) {
-    AppClass thisContext;  //  field
-    return thisContext.CheckString(str);
-}
 

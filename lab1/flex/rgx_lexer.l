@@ -1,3 +1,7 @@
+%{
+using namespace std;
+%}
+
 
 %option noyywrap c++
 %option yylineno
@@ -10,6 +14,9 @@ oper_sgn            [&, |, ^]
 regex_str           ^{spaces}{var_name}({spaces}{oper_sgn}{spaces}{var_name}{spaces})*
 
 %%      
+{var_name} { 
+
+}
 {regex_str} { yylineno = 1;}
 .           { return 0; }
 %%

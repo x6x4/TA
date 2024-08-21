@@ -10,7 +10,7 @@
 
 
 size_t spaces_limit = 2;
-size_t cnt = 10;
+size_t cnt = 1000;
 
 
 const std::string alnum_charset =
@@ -66,45 +66,50 @@ std::string gen_regex_rest () {
     return rgx_rest;
 }
 
-std::string regex_gen (std::size_t _length) {
+std::string regex_gen (std::size_t str_length) {
     std::string total_rgx;
     
     total_rgx = random_string(rand()%spaces_limit, spaces_charset) + 
     gen_var_name();
 
-    while (total_rgx.length() < _length)
-        total_rgx = total_rgx + gen_regex_rest();
+    auto prev = total_rgx;
 
-    total_rgx.resize(_length);  //  ??????????????
+    while (total_rgx.length() < str_length) {
+        prev = total_rgx;
+        total_rgx = total_rgx + gen_regex_rest();
+    }
 
     return total_rgx;    
 }
 
 #include "../check_string.h"  //  target include dirs
+#include "../std_regex/std_regex.h"
 
-std::string shit_gen (std::size_t _length) {
+std::string shit_gen (std::size_t str_length) {
 
-    std::string str(_length,0);
+    StdCheckString checker;
+
+    std::string str(str_length,0);
     std::size_t print_ch_start = 32;
     std::size_t print_char_end = 126;
 
     do {
-        for (size_t i = 0; i < _length; i++) {
+        for (size_t i = 0; i < str_length; i++) {
             str[i] = rand() % (print_char_end-print_ch_start+1) 
             + print_ch_start;
         }
-    } while (check_string(str));
+    } while (checker(str));
 
     return str;
 }
 
-void make_regex_data (std::size_t _length) {
-    std::string filename = "./data/match" + std::to_string(_length) + ".data";
+void make_regex_data (std::size_t str_length) {
+    std::string filename = "./data/match" + std::to_string(str_length) + ".data";
     std::ofstream file(filename, 
                         std::ios::out | std::ios::trunc);
     if (file.is_open()) {
         for (size_t i = 0; i < cnt; i++) {
-            file << regex_gen(_length) << '\n';
+            file << regex_gen(str_length) << '\n';
         }
         file.close();
     } else std::cerr << "File error." << std::endl;

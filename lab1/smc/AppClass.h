@@ -3,6 +3,9 @@
 
 #include "AppClass_sm.h"
 #include <string>
+#include "../check_string.h"
+
+
 
 #ifdef CRTP
 class AppClass : public AppClassContext<AppClass>
@@ -26,8 +29,7 @@ public:
     ~AppClass() {};
         // Destructor.
 
-    bool CheckString(const std::string &str);
-        // Checks if the string is acceptable.
+    inline bool is_Acceptable() const { return isAcceptable; }
 
     inline void Acceptable()
     { isAcceptable = true; };
@@ -39,3 +41,10 @@ public:
 
 #endif
 
+class SmcCheckString : public CheckString {
+
+AppClass _fsm; 
+
+public:
+    bool operator() (const std::string& str) override;
+};

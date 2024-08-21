@@ -8,7 +8,7 @@ set (CMAKE_CXX_STANDARD 20)
 set (AUX_FLAGS "-O0 -coverage ")
 
 
-set (FLAG "SMC")
+set (FLAG "STD_REGEX")
 set (CMAKE_CXX_FLAGS "-O2 -std=c++20 -Wall -Wextra -Wpedantic -D${FLAG}")
 
 add_subdirectory(flex)

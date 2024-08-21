@@ -1,6 +1,7 @@
 
 #include <cstddef>
 #include <iostream>
+#include <stdexcept>
 
 #include "regex_gen/regex_gen.h"
 
@@ -11,6 +12,7 @@
 
 int main (int argc, char **argv) {
     std::srand(time(NULL));
+    if (!argv[1]) throw std::runtime_error("No arguments");
     make_regex_data(std::atoi(argv[1]));
     make_shit_data(std::atoi(argv[1]));
 }
