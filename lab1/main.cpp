@@ -5,7 +5,7 @@
 #ifdef STD_REGEX
 #include "std_regex/std_regex.h"
 #elif defined FLEX 
-
+#include "flex/flex_regex.h"
 #elif defined SMC 
 #include "smc/AppClass.h"
 
@@ -35,8 +35,8 @@ int main() {
         bool result = (*checker)(line);
         std::cout << result << ' ';
     } 
-    std::cout << std::endl;
     checker->print();
+    std::cout << std::endl;
     //delete checker;
 
     return 0;
