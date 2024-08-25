@@ -3,6 +3,7 @@
 #include <sstream>
 #include <FlexLexer.h>
 
+extern CleverMapa mapa;
 
 class FlexCheckString : public CheckString {
 public:
@@ -17,7 +18,7 @@ public:
     }
 
     void print() override {
-
+        ::mapa.print();
     }
 
 };

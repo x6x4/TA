@@ -61,6 +61,6 @@ int yywrap() {
 
     tmp_tokens = std::vector<std::string>();
 
-    mapa.print();
+    //mapa.print();
     return 1;
 }

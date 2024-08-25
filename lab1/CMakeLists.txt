@@ -7,7 +7,7 @@ project(TA_lab1)
 set (CMAKE_CXX_STANDARD 20)
 set (AUX_FLAGS "-O0 -coverage ")
 
-set (FLAG "SMC")
+set (FLAG "FLEX")
 set (CMAKE_CXX_FLAGS "-O2 -std=c++20 -Wall -Wextra -Wpedantic -D${FLAG}")
 
 
